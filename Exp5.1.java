@@ -1,56 +1,38 @@
-import java.io.*;
+import java.util.*;
 
-class Student implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private int id;
-    private String name;
-    private double gpa;
-
-    public Student(int id, String name, double gpa) {
-        this.id = id;
-        this.name = name;
-        this.gpa = gpa;
-    }
-
-    public void display() {
-        System.out.println("Student ID: " + id + ", Name: " + name + ", GPA: " + gpa);
-    }
-}
-
-public class StudentSerialization {
-    private static final String FILE_NAME = "student.ser";
-
-    public static void serializeStudent(Student student) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
-            oos.writeObject(student);
-            System.out.println("Student object has been serialized and saved to file.");
-        } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
+public class IntegerSumCalculator {
+    
+    public static Integer parseStringToInteger(String str) {
+        try {
+            return Integer.parseInt(str);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number format: " + str);
+            return null;
         }
     }
-
-    public static Student deserializeStudent() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_NAME))) {
-            System.out.println("Student object has been deserialized.");
-            return (Student) ois.readObject();
-        } catch (FileNotFoundException e) {
-            System.out.println("Error: File not found.");
-        } catch (IOException e) {
-            System.out.println("Error: IO Exception occurred.");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Error: Class not found.");
+    
+    public static int calculateSum(List<Integer> numbers) {
+        int sum = 0;
+        for (Integer num : numbers) {
+            if (num != null) {
+                sum += num;
+            }
         }
-        return null;
+        return sum;
     }
-
+    
     public static void main(String[] args) {
-        Student student = new Student(1, "John Doe", 3.75);
-        serializeStudent(student);
+        List<String> inputValues = Arrays.asList("10", "20", "30", "40", "50");
+        List<Integer> integerList = new ArrayList<>();
         
-        Student deserializedStudent = deserializeStudent();
-        if (deserializedStudent != null) {
-            System.out.println("Deserialized Student Details:");
-            deserializedStudent.display();
+        for (String value : inputValues) {
+            Integer parsedValue = parseStringToInteger(value);
+            if (parsedValue != null) {
+                integerList.add(parsedValue);
+            }
         }
+        
+        int sum = calculateSum(integerList);
+        System.out.println("The sum of the list is: " + sum);
     }
 }
